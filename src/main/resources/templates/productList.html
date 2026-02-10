@@ -28,7 +28,14 @@
             <td th:text="${product.productName}"></td>
             <td th:text="${product.productQuantity}"></td>
             <td>
-                <form th:action="@{/product/delete}" method="post">
+                <a th:href="@{/product/edit(name=${product.productName})}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <form th:action="@{/product/delete}"
+                      method="post"
+                      style="display:inline">
                     <input type="hidden"
                            name="productName"
                            th:value="${product.productName}">

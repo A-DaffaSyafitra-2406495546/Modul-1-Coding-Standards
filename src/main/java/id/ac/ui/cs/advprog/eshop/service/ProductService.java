@@ -11,4 +11,8 @@ public interface ProductService {
 
     void delete(String productName);
 
+    Product findByName(String productName);
+
+    void update(String oldName, String newName, int newQuantity);
+
 }

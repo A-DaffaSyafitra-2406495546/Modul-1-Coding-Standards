@@ -41,4 +41,35 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
+    @Override
+    public Product findByName(String productName) {
+        Iterator<Product> iterator = productRepository.findAll();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductName() != null &&
+                    product.getProductName().equals(productName)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void update(String oldName, String newName, int newQuantity) {
+        Iterator<Product> iterator = productRepository.findAll();
+
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+
+            if (product.getProductName() != null &&
+                    product.getProductName().equals(oldName)) {
+
+                product.setProductName(newName);
+                product.setProductQuantity(newQuantity);
+                break;
+            }
+        }
+    }
+
 }
