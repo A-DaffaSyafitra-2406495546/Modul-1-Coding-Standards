@@ -35,4 +35,34 @@ public class ProductController {
         model.addAttribute("products", allProducts);
         return "productList";
     }
+
+    @GetMapping("/delete")
+    public String deleteProductPage() {
+        return "deleteProduct";
+    }
+    @PostMapping("/delete")
+    public String deleteProductPost(@RequestParam String productName) {
+        service.delete(productName);
+        return "redirect:list";
+    }
+    @GetMapping("/edit")
+    public String editProductPage(@RequestParam String name, Model model) {
+        Product product = service.findByName(name);
+        model.addAttribute("product", product);
+        return "editProduct";
+    }
+
+
+    @PostMapping("/edit")
+    public String editProductPost(@RequestParam String oldName,
+                                  @RequestParam String productName,
+                                  @RequestParam int productQuantity) {
+
+        service.update(oldName, productName, productQuantity);
+        return "redirect:list";
+    }
+
+
+
+
 }
