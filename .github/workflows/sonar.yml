@@ -21,12 +21,9 @@ jobs:
       - name: Test + Coverage
         run: ./gradlew test jacocoTestReport
 
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v3
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey= a-daffasyafitra-2406495546
-            -Dsonar.organization=A-DaffaSyafitra-2406495546
-            -Dsonar.java.binaries=build/classes
+  - name: SonarCloud Scan
+    uses: sonarsource/sonarcloud-github-action@v3
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      args: "-Dsonar.projectKey=a-daffasyafitra-2406495546 -Dsonar.organization=a-daffasyafitra-2406495546 -Dsonar.java.binaries=build/classes/java/main"
