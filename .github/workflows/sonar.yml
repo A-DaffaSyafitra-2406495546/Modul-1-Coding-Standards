@@ -25,8 +25,9 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_SCANNER_OPTS: -Dsonar.scanner.skipJreProvisioning=true
         with:
           args: >
-            -Dsonar.projectKey=a-daffasyafitra-2406495546
-            -Dsonar.organization=A-DaffaSyafitra-2406495546
-            -Dsonar.java.binaries=build/classes
+            -Dsonar.projectKey=xxx
+            -Dsonar.organization=yyy
+            -Dsonar.java.binaries=build/classes/java/main
