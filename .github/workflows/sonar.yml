@@ -27,3 +27,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: "-Dsonar.projectKey=A-DaffaSyafitra-2406495546_Modul-1-Coding-Standards -Dsonar.organization=a-daffasyafitra-2406495546 -Dsonar.java.binaries=build/classes/java/main"
+
