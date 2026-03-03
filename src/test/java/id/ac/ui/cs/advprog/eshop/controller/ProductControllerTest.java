@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = "spring.thymeleaf.check-template-location=false")
 class ProductControllerTest {
 
-    private static final String BASE = "/product"; // ubah jadi "" kalau controller kamu ga ada @RequestMapping
+    private static final String BASE = "/product";
 
     @Autowired
     private MockMvc mockMvc;
