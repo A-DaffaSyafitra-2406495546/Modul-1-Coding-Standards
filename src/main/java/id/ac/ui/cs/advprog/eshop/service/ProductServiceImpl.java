@@ -28,27 +28,13 @@ public class ProductServiceImpl implements ProductService {
         productIterator.forEachRemaining(allProduct::add);
         return allProduct;
     }
+
     @Override
-    public void delete(String productName) {
+    public Product findById(String productId) {
         Iterator<Product> iterator = productRepository.findAll();
         while (iterator.hasNext()) {
             Product product = iterator.next();
-            if (product.getProductName() != null &&
-                    product.getProductName().equals(productName)) {
-                iterator.remove();
-                break;
-            }
-        }
-    }
-
-
-    @Override
-    public Product findByName(String productName) {
-        Iterator<Product> iterator = productRepository.findAll();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getProductName() != null &&
-                    product.getProductName().equals(productName)) {
+            if (product.getProductId().equals(productId)) {
                 return product;
             }
         }
@@ -56,20 +42,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void update(String oldName, String newName, int newQuantity) {
+    public void update(String productId, Product updatedProduct) {
         Iterator<Product> iterator = productRepository.findAll();
-
         while (iterator.hasNext()) {
             Product product = iterator.next();
-
-            if (product.getProductName() != null &&
-                    product.getProductName().equals(oldName)) {
-
-                product.setProductName(newName);
-                product.setProductQuantity(newQuantity);
-                break;
+            if (product.getProductId().equals(productId)) {
+                product.setProductName(updatedProduct.getProductName());
+                product.setProductQuantity(updatedProduct.getProductQuantity());
+                return;
             }
         }
     }
 
+    @Override
+    public void deleteProductById(String productId) {
+        Iterator<Product> iterator = productRepository.findAll();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductId().equals(productId)) {
+                iterator.remove();
+                return;
+            }
+        }
+    }
 }
