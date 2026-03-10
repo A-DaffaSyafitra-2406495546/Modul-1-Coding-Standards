@@ -20,4 +20,20 @@ public class ProductRepository {
     public Iterator<Product> findAll() {
         return productData.iterator();
     }
+    public Product update(Product updatedProduct) {
+        for (int i = 0; i < productData.size(); i++) {
+            Product product = productData.get(i);
+            if (product.getProductId().equals(updatedProduct.getProductId())) {
+                productData.set(i, updatedProduct);
+                return updatedProduct;
+            }
+        }
+        return null;
+    }
+
+    public void delete(String productId) {
+        productData.removeIf(product -> product.getProductId().equals(productId));
+    }
+
+
 }

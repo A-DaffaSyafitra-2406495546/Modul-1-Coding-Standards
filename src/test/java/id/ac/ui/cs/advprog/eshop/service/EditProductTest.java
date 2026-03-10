@@ -25,6 +25,7 @@ class EditProductTest {
         );
 
         Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo");
         product.setProductQuantity(10);
 
@@ -33,7 +34,13 @@ class EditProductTest {
 
     @Test
     void editProduct_positive_existingProduct() {
-        productService.update("Sampo", "Sampo Baru", 20);
+        String id = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+
+        Product newProductData = new Product();
+        newProductData.setProductName("Sampo Baru");
+        newProductData.setProductQuantity(20);
+
+        productService.update(id, newProductData);
 
         Product updatedProduct = productService.findByName("Sampo Baru");
 
@@ -44,7 +51,11 @@ class EditProductTest {
 
     @Test
     void editProduct_negative_productNotFound() {
-        productService.update("TidakAda", "Produk Baru", 5);
+        Product newProductData = new Product();
+        newProductData.setProductName("Produk Baru");
+        newProductData.setProductQuantity(5);
+
+        productService.update("id-asal", newProductData);
 
         assertEquals(1, productService.findAll().size());
         assertNull(productService.findByName("Produk Baru"));

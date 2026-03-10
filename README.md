@@ -65,3 +65,36 @@ LSP: Jika subclass tidak mengimplementasi interface dengan benar, program bisa m
 ISP: Jika CarService dan ProductService digabung menjadi satu interface besar, CarController terpaksa bergantung pada method-method Product yang tidak relevan, membuat kode menjadi lebih sulit dipahami dan di-maintain.
 
 DIP: Pada before-solid, CarController bergantung langsung pada CarServiceImpl. Jika ingin mengganti implementasi service (misalnya saat unit testing dengan mock), kita harus mengubah kode CarController juga.
+
+
+# Reflection 3 - TDD & F.I.R.S.T. Principles
+
+## 1. TDD Flow Reflection (Percival, 2017)
+
+Mengikuti alur TDD dalam exercise ini terasa cukup bermanfaat. Berdasarkan pertanyaan reflektif Percival, beberapa hal yang saya evaluasi:
+
+Apakah TDD flow ini cukup berguna? Ya, cukup berguna. Dengan menulis test terlebih dahulu sebelum implementasi, saya dipaksa untuk memikirkan expected behavior dari setiap method sebelum menulisnya. Hal ini membantu saya memahami kontrak dari setiap method (misalnya createOrder, updateStatus) secara lebih jelas sebelum implementasi dilakukan.
+
+Yang perlu diperbaiki ke depannya:
+- Saat membuat test, saya belum sepenuhnya memikirkan edge cases terlebih dahulu (misalnya, apa yang terjadi jika orderId tidak ditemukan). Ke depannya saya perlu mendefinisikan semua skenario gagal di awal sebelum mulai implementasi.
+- Siklus Red-Green-Refactor belum selalu diikuti secara ketat. Terkadang saya langsung menulis implementasi yang lengkap, bukan hanya yang cukup untuk membuat test hijau. Ke depannya, saya perlu lebih disiplin mengikuti siklus ini agar refactoring lebih terarah.
+- Perlu membiasakan diri menulis test untuk boundary conditions secara eksplisit, bukan hanya happy path.
+
+
+## 2. F.I.R.S.T. Principle Reflection
+
+Mengevaluasi unit test yang telah dibuat berdasarkan prinsip F.I.R.S.T.:
+
+Fast: Test berjalan cepat karena menggunakan mock/stub tanpa koneksi database nyata.
+
+Independent: Sebagian test masih bergantung pada urutan eksekusi karena berbagi state di @BeforeEach. Perlu dipastikan setiap test benar-benar berdiri sendiri.
+
+Repeatable: Test dapat dijalankan berulang kali dengan hasil yang sama karena tidak bergantung pada environment eksternal.
+
+Self-Validating: Setiap test menggunakan assertEquals atau assertNotNull sehingga hasilnya jelas pass atau fail tanpa interpretasi manual.
+
+Timely: Tidak sepenuhnya timely karena beberapa test ditulis setelah implementasi selesai, bukan sebelumnya. Ke depannya perlu lebih konsisten menulis test sebelum implementasi sesuai TDD.
+
+Hal yang perlu diperbaiki:
+- Memastikan setiap test benar-benar Independent dengan menghindari shared mutable state antar test.
+- Lebih konsisten menerapkan Timely dengan menulis test sebelum kode implementasi, bukan setelahnya.
