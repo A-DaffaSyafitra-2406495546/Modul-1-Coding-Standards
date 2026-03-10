@@ -43,14 +43,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(String productId, Product updatedProduct) {
-        Iterator<Product> iterator = productRepository.findAll();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getProductId().equals(productId)) {
-                product.setProductName(updatedProduct.getProductName());
-                product.setProductQuantity(updatedProduct.getProductQuantity());
-                return;
-            }
+        Product product = findById(productId);
+        if (product != null) {
+            product.setProductName(updatedProduct.getProductName());
+            product.setProductQuantity(updatedProduct.getProductQuantity());
+            productRepository.update(product);
         }
     }
 
@@ -60,6 +57,30 @@ public class ProductServiceImpl implements ProductService {
         while (iterator.hasNext()) {
             Product product = iterator.next();
             if (product.getProductId().equals(productId)) {
+                iterator.remove();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public Product findByName(String productName) {
+        Iterator<Product> iterator = productRepository.findAll();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductName().equals(productName)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(String productName) {
+        Iterator<Product> iterator = productRepository.findAll();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductName().equals(productName)) {
                 iterator.remove();
                 return;
             }

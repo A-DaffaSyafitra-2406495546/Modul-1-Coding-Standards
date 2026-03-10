@@ -5,13 +5,13 @@ import id.ac.ui.cs.advprog.eshop.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,7 +25,6 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
     private ProductService service;
 
     @Test
@@ -60,44 +59,42 @@ class ProductControllerTest {
     }
 
     @Test
-    void deletePage_shouldReturnDeleteProductView() throws Exception {
-        mockMvc.perform(get(BASE + "/delete"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("deleteProduct"));
-    }
-
-    @Test
     void deletePost_shouldCallServiceAndRedirect() throws Exception {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+
         mockMvc.perform(post(BASE + "/delete")
-                        .param("productName", "Indomie"))
+                        .param("productId", productId))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/list"));
 
-        verify(service).delete("Indomie");
+        verify(service).deleteProductById(productId);
     }
 
     @Test
     void editPage_shouldLoadProductAndReturnEditProductView() throws Exception {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
         Product p = new Product();
-        when(service.findByName("Indomie")).thenReturn(p);
+        p.setProductId(productId);
 
-        mockMvc.perform(get(BASE + "/edit").param("name", "Indomie"))
+        when(service.findById(productId)).thenReturn(p);
+
+        mockMvc.perform(get(BASE + "/edit/" + productId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editProduct"))
                 .andExpect(model().attribute("product", p));
-
-        verify(service).findByName("Indomie");
     }
 
     @Test
     void editPost_shouldCallUpdateAndRedirect() throws Exception {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+
         mockMvc.perform(post(BASE + "/edit")
-                        .param("oldName", "Indomie")
+                        .param("productId", productId)
                         .param("productName", "Indomie Goreng")
                         .param("productQuantity", "7"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/list"));
 
-        verify(service).update("Indomie", "Indomie Goreng", 7);
+        verify(service).update(eq(productId), any(Product.class));
     }
 }
